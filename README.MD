@@ -1,13 +1,11 @@
-# Tornado Server Boilerplate
-
-This boilerplate is made to provide guide and accelerate setup time for developers that need an out-of-the-box server solution.
+This project demonstrates the use of WalletKit and BlockSet api to build a simple shopping cart accepting ERC20 tokens as payment
 
 ## Get Started
 
 ### Install Required Packages
 
 ```
-pip3 install -r requirements.txt
+pip3.8 install -r requirements.txt
 ```
 
 ### Run The Server ☄️🔥
@@ -16,10 +14,6 @@ pip3 install -r requirements.txt
 python3.8 main.py 
 ```
 
-## Stuff You Ought To Know
+This is not production code, and we list a few of the pitfalls below:
+-consider pregen HD wallet addresses for carts and load them into the application
 
- - Possible to create individual routes inside the `src/routes` folder.
- - Request parameters from `GET` requests are automatically parsed.
- - All request and response objects are treated as `JSON` object.
-
-Have fun! 🌟
