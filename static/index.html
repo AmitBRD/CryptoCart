@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Shopping Cart</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+	<main class="page">
+	 	<section class="shopping-cart dark">
+	 		<div class="container">
+		        <div class="block-heading">
+							<div class="logo">
+								<img class="img-fluid mx-auto d-block image" src="assets/img/brd-logo-gradient-actual_180x.png">
+							</div>
+		          <!-- <h2>Crypto Cart</h2> -->
+		          <p>SHOP.BRD.COM</p>
+		        </div>
+		        <div class="content">
+	 				<div class="row">
+	 					<div class="col-md-12 col-lg-8">
+	 						<div class="items">
+				 				<div class="product">
+				 					<div class="row">
+					 					<div class="col-md-3">
+					 						<img class="img-fluid mx-auto d-block image" src="assets/img/BRD Snapback Trucker Cap.png">
+					 					</div>
+					 					<div class="col-md-8">
+					 						<div class="info">
+						 						<div class="row">
+							 						<div class="col-md-5 product-name">
+							 							<div class="product-name">
+								 							<a href="#">BRD Snapback Trucker Cap</a>
+								 							<div class="product-info">
+									 							<div>cotton/polyester<span class="value"> </span></div>
+									 							<div> <span class="value"> </span></div>
+									 							<div>Snapback closure<span class="value"> </span></div>
+									 						</div>
+									 					</div>
+							 						</div>
+							 						<div class="col-md-4 quantity">
+							 							<label for="quantity">Quantity:</label>
+							 							<input id="quantity0" type="number" value ="0" class="form-control quantity-input" >
+							 						</div>
+							 						<div class="col-md-3 price">
+							 							<span>$27</span>
+							 						</div>
+							 					</div>
+							 				</div>
+					 					</div>
+					 				</div>
+				 				</div>
+				 				<div class="product">
+				 					<div class="row">
+					 					<div class="col-md-3">
+					 						<img class="img-fluid mx-auto d-block image" src="assets/img/BRD Pink T-Shirt.png">
+					 					</div>
+					 					<div class="col-md-8">
+					 						<div class="info">
+						 						<div class="row">
+							 						<div class="col-md-5 product-name">
+							 							<div class="product-name">
+								 							<a href="#">BRD Pink T-Shirt</a>
+								 							<div class="product-info">
+									 							<div>100% cotton<span class="value"> </span></div>
+									 							<div> <span class="value"> </span></div>
+									 							<div>Unisex sizing<span class="value"> </span></div>
+									 						</div>
+									 					</div>
+							 						</div>
+							 						<div class="col-md-4 quantity">
+							 							<label for="quantity">Quantity:</label>
+							 							<input id="quantity1" type="number" value ="0" class="form-control quantity-input">
+							 						</div>
+							 						<div class="col-md-3 price">
+							 							<span>$27</span>
+							 						</div>
+							 					</div>
+							 				</div>
+					 					</div>
+					 				</div>
+				 				</div>
+				 				<div class="product">
+				 					<div class="row">
+					 					<div class="col-md-3">
+					 						<img class="img-fluid mx-auto d-block image" src="assets/img/BRD Soft Shell Jacket.png">
+					 					</div>
+					 					<div class="col-md-8">
+					 						<div class="info">
+						 						<div class="row">
+							 						<div class="col-md-5 product-name">
+							 							<div class="product-name">
+								 							<a href="#">BRD Soft Shell Jacket</a>
+								 							<div class="product-info">
+									 							<div>polyester/spandex<span class="value"> </span></div>
+									 							<div> <span class="value"> </span></div>
+									 							<div>water-resistant<span class="value"> </span></div>
+									 						</div>
+									 					</div>
+							 						</div>
+							 						<div class="col-md-4 quantity">
+							 							<label for="quantity">Quantity:</label>
+							 							<input id="quantity2" type="number" value ="0" class="form-control quantity-input">
+							 						</div>
+							 						<div class="col-md-3 price">
+							 							<span>$130</span>
+							 						</div>
+							 					</div>
+							 				</div>
+					 					</div>
+					 				</div>
+				 				</div>
+				 			</div>
+			 			</div>
+			 			<div class="col-md-12 col-lg-4">
+			 				<div class="summary">
+			 					<h3>Summary</h3>
+			 					<div class="summary-item"><span class="text">Subtotal</span><span id="subtotal" class="price">$0</span></div>
+			 					<div class="summary-item"><span class="text">Discount</span><span id="discount" class="price">$0</span></div>
+			 					<div class="summary-item"><span class="text">Shipping</span><span id="shipping" class="price">$0</span></div>
+			 					<div class="summary-item"><span class="text">Total</span><span id="total" class="price">$0</span></div>
+
+
+			 					<button type="button" class="btn btn-primary btn-lg btn-block" onclick="submit()">Pay with <img src="assets/img/brd-logo-white-actual.png" /></button>
+
+
+							</div>
+
+							<div class="qrcode" id="qrcode"></div>
+
+			 			</div>
+		 			</div>
+		 		</div>
+	 		</div>
+		</section>
+	</main>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="qrcode/jquery.min.js"></script>
+<script type="text/javascript" src="qrcode/qrcode.js"></script>
+<script type="text/javascript">
+	// Various sample URIs that are parseable by the Android app.
+	// Bitcoin - bitcoin:1EfWeEsbLbD7xZgJ6GVXFtR87vEKq3dDoX?amount=1
+	// Ethereum - ethereum:/0xfDED40f3a05eDEb4Ad833d605D22bf27ca9353Ea?value=1
+	// TUSD - ethereum:/0xfDED40f3a05eDEb4Ad833d605D22bf27ca9353Ea?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount=1
+
+	const URL = "ethereum:/0xfDED40f3a05eDEb4Ad833d605D22bf27ca9353Ea?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount=";
+	const SHIPPING_COST = 3.99;
+
+	var total = 0;
+	//let prices = [27, 27, 130];
+	let prices = [1, 2, 3];
+	let quantities = [0, 0, 0];
+
+	var qrcode = new QRCode(document.getElementById("qrcode"), {} );
+
+	function makeCode (url) {
+			qrcode.makeCode(url);
+	}
+
+	function calculateTotal (productIndex, productQuantity) {
+		quantities[productIndex] = productQuantity;
+
+  	total = 0;
+
+		for (i = 0; i < quantities.length; i++) {
+			total = +total + (prices[i] * quantities[i]);
+		}
+
+		document.getElementById('subtotal').innerHTML = "$" + total;
+
+		document.getElementById('shipping').innerHTML = "$" + SHIPPING_COST;
+
+		if (total > 0) {
+			total = +total + +SHIPPING_COST;
+		}
+
+		//discount = Math.round(((+total - (+total / 100)) * 100 ) / 100);
+
+		//document.getElementById('discount').innerHTML = "-$" + discount;
+
+		//document.getElementById('total').innerHTML = "$" + (Math.round((+total - discount) * 100) / 100);
+		document.getElementById('total').innerHTML = "$" + (Math.round((+total) * 100) / 100);
+
+		alert(URL+total);
+
+		makeCode(URL+total);
+	}
+
+	function submit() {
+	  var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+				alert("success");
+				// Get address from response
+	      //document.getElementById("demo").innerHTML = this.responseText;
+	    } else {
+	    	alert("submit error:" + this.status);
+	    }
+	  };
+
+		var queryParameter = "amount=" + total;
+		alert(queryParameter);
+	  xhttp.open("POST", "demo_post.asp", true); // TODO: update this page
+	  xhttp.send(queryParameter);
+	}
+
+	$("#quantity0").on("change", function(){
+		if (this.value < 0) {
+			this.value = 0;
+		}
+
+		calculateTotal(0, this.value);
+  });
+
+	$("#quantity1").on("change", function(){
+		if (this.value < 0) {
+			this.value = 0;
+		}
+
+		calculateTotal(1, this.value);
+	});
+
+	$("#quantity2").on("change", function(){
+		if (this.value < 0) {
+			this.value = 0;
+		}
+
+		calculateTotal(2, this.value);
+  });
+
+</script>
+</body>
+</html>
