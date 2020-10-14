@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Shopping Cart</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body onload="makeCode()">
+	<main class="page">
+	 	<section class="shopping-cart dark">
+	 		<div class="container">
+		        <div class="block-heading">
+							<div class="logo">
+								<img class="img-fluid mx-auto d-block image" src="assets/img/brd-logo-gradient-actual_180x.png">
+							</div>
+		          <p>SHOP.BRD.COM</p>
+		        </div>
+		        <div class="content">
+				 			<div class="checkout">
+								Scan the QR code in your BRD app!
+								<div class="qrcode" id="qrcode"></div>
+				 			</div>
+		 			</div>
+		 		</div>
+	 		</div>
+		</section>
+	</main>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="qrcode/jquery.min.js"></script>
+<script type="text/javascript" src="qrcode/qrcode.js"></script>
+<script type="text/javascript">
+	// Various sample URIs that are parseable by the Android app.
+	// Bitcoin - bitcoin:1EfWeEsbLbD7xZgJ6GVXFtR87vEKq3dDoX?amount=1
+	// Ethereum - ethereum:/0xfDED40f3a05eDEb4Ad833d605D22bf27ca9353Ea?value=1
+	// TUSD - ethereum:/0xfDED40f3a05eDEb4Ad833d605D22bf27ca9353Ea?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount=1
+
+	//const URL = "ethereum:/0xfDED40f3a05eDEb4Ad833d605D22bf27ca9353Ea?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount=";
+
+	const URL_PREPEND = "ethereum:/";
+	const URL_APPEND  = "?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount=";
+
+	var qrcode = new QRCode(document.getElementById("qrcode"), {});
+
+	function makeCode () {
+		var address = getParameterByName("address");
+		var amount = getParameterByName("amount");
+
+		var url = URL_PREPEND + address + URL_APPEND + amount;
+
+		qrcode.makeCode(url);
+		// alert(url);
+	}
+
+	function getParameterByName(name) {
+	    url = window.location.href;
+	    name = name.replace(/[\[\]]/g, '\\$&');
+	    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+	        results = regex.exec(url);
+	    if (!results) return null;
+	    if (!results[2]) return '';
+	    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+	}
+
+</script>
+
+</body>
+</html>

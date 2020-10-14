@@ -112,21 +112,6 @@
 	float: right;
 }
 
-
-/* .shopping-cart .summary .qrcode{
-	height:auto;
-	width:auto;
-	margin-top: 15px;
-	padding: 10px;
-} */
-
-/* .shopping-cart .qrcode{ TODO!!!!
-	height:auto;
-	width:auto;
-	border: 10px solid #ffffff;
-	background: #ffffff;
-} */
-
 .shopping-cart .summary button{
 	margin-top: 20px;
 	background-color: #4b77f3;
@@ -155,5 +140,17 @@
 	.shopping-cart .items .product .info .quantity .quantity-input {
 		padding: 4px 10px;
 		text-align: center;
+	}
+
+	.shopping-cart .content  {
+		display: flex;
+	  justify-content: center;
+	}
+
+	.shopping-cart .content .checkout .qrcode{
+		height:auto;
+		width:auto;
+		border: 10px solid #ffffff;
+		background: #ffffff;
 	}
 }

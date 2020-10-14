@@ -158,11 +158,11 @@
 	let prices = [1, 2, 3];
 	let quantities = [0, 0, 0];
 
-	var qrcode = new QRCode(document.getElementById("qrcode"), {} );
-
-	function makeCode (url) {
-			qrcode.makeCode(url);
-	}
+	// var qrcode = new QRCode(document.getElementById("qrcode"), {} );
+	//
+	// function makeCode (url) {
+	// 		qrcode.makeCode(url);
+	// }
 
 	function calculateTotal (productIndex, productQuantity) {
 		quantities[productIndex] = productQuantity;
@@ -190,17 +190,24 @@
 
 		alert(URL+total);
 
-		makeCode(URL+total);
+		// makeCode(URL+total);
 	}
 
 	function submit() {
 	  var xhttp = new XMLHttpRequest();
+		var checkoutUrl = "";
 	  xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 				alert("success");
 				// Get address from response
 	      //document.getElementById("demo").innerHTML = this.responseText;
+
 	    } else {
+				// TODO: Move to success case
+				var address = "0xfDED40f3a05eDEb4Ad833d605D22bf27ca9353Ea" //TODO: get from response
+
+				window.open(getCheckoutUrl(address), "_self")
+
 	    	alert("submit error:" + this.status);
 	    }
 	  };
@@ -209,6 +216,10 @@
 		alert(queryParameter);
 	  xhttp.open("POST", "demo_post.asp", true); // TODO: update this page
 	  xhttp.send(queryParameter);
+	}
+
+	function getCheckoutUrl(address) {
+		return "checkout.html?address=" + address + "&amount=" + total;
 	}
 
 	$("#quantity0").on("change", function(){
