@@ -95,7 +95,7 @@ def make_app():
     print(os.getcwd())
     return tornado.web.Application([
         (r"/", MainHandler),
-        (r"/static/(.*)", StaticHandler, {'path': os.getcwd()}),
+        (r"/static/(.*)", tornado.web.StaticFileHandler, {'path': os.getcwd()+"/static/"}),
         (r"/webhook",WebhookHandler)
 
     ])
