@@ -15,6 +15,7 @@ import os
 from walletkit import BRSequence
 from queue import Queue,Empty
 import binascii
+import json
 
 
 NUM_BASKETS = 5
@@ -65,9 +66,10 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
       try:
           with pool.lease() as address:
-            addr_str = str(binascii.hexlify(bytearray(address["bytes"])))
+            #addr_str = str(binascii.hexlify(bytearray(address["bytes"])))
             print('write address stream')
-            yield self.write("Use address:"+addr_str)
+            addr_str = bytearray(address["bytes"]).hex()
+            yield self.write(json.dumps(addr_str))
             global monitor_address
             print(monitor_address)
             #TODO; setup the monitor here
@@ -87,8 +89,11 @@ class WebhookHandler(tornado.web.RequestHandler):
     address = self.get_argument("address") 
     global monitor_address
     print(monitor_address)  
-    monitor_address.remove(address) 
-    self.finish(str("unlocking"+address))
+    if(address in monitor_address):
+      monitor_address.remove(address) 
+      self.finish(str("unlocking"+address))  
+    self.finish("NO SUCH CART")  
+    
     
 
 def make_app():
