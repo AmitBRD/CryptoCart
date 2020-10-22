@@ -114,10 +114,10 @@
 
 .shopping-cart .summary button{
 	margin-top: 20px;
-	background-color: #4b77f3;
+	
 }
 
-.shopping-cart .summary img{
+.shopping-cart .summary .logo{
 	height:20px;
 	width:auto;
 }

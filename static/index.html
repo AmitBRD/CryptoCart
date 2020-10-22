@@ -116,6 +116,8 @@
 				 			</div>
 			 			</div>
 			 			<div class="col-md-12 col-lg-4">
+			 				<div class="row">
+			 					<div class="col-md-12">
 			 				<div class="summary">
 			 					<h3>Summary</h3>
 			 					<div class="summary-item"><span class="text">Subtotal</span><span id="subtotal" class="price">$0</span></div>
@@ -124,18 +126,42 @@
 			 					<div class="summary-item"><span class="text">Total</span><span id="total" class="price">$0</span></div>
 
 
-			 					<button type="button" class="btn btn-primary btn-lg btn-block" onclick="submit()">Pay with <img src="assets/img/brd-logo-white-actual.png" /></button>
-
-
+			 					<button id="pay" type="button" class="btn btn-primary btn-lg btn-block" onclick="submit()">Pay with <img src="assets/img/brd-logo-white-actual.png" height="20px" /></button>
+			 					
 							</div>
-
-							<div class="qrcode" id="qrcode"></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div id="qrcode" class="card-body  align-items-center d-flex justify-content-center"></div>
+							</div>
+						</div>
 
 			 			</div>
 		 			</div>
 		 		</div>
 	 		</div>
 		</section>
+		<div class="modal" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Modal title</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      	
+		
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary">Save changes</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</main>
 
 </body>
@@ -192,6 +218,12 @@
 		// makeCode(URL+total);
 	}
 
+	var qrcode = new QRCode(document.getElementById("qrcode"), {
+		    width: 150,
+		    height: 150,
+		    class:"img-fluid"
+		  });
+
 	function submit() {
 	  // var xhttp = new XMLHttpRequest();
 		// var checkoutUrl = "";
@@ -216,14 +248,28 @@
 		// alert(queryParameter);
 	  // xhttp.open("GET", "localhost:8888", true); // TODO: update this page
 	  // xhttp.send(queryParameter);
+	  	
+	  	$("#pay").toggleClass("btn-secondary");
+	  	
+		$.ajax({url: 'http://localhost:8888',
+						type: "GET",
+						dataType: "json",
+						success: function (data) {
+						    
+						    //TODO: @Shiv fill in the amount
+								const URL2 = "ethereum:/0x" + data + "?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount="+total;
+							  	qrcode.clear();
+							  	setTimeout(function(){
+							  		$("#pay").toggleClass("btn-secondary");
+							  		qrcode.makeCode(data);
+							  	}, 450);
+								//$('#myModal').modal('show')
 
-		$.get( "http://localhost:8888", function( data ) {
-  		alert(data);
-
-
-
-		});
-	}
+								//jQuery("#qrcode").show();
+						},
+					});
+	};
+	
 
 	function getCheckoutUrl(address) {
 		return "checkout.html?address=" + address + "&amount=" + total;
@@ -260,54 +306,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-
-<div class="container">
-  <a tabindex="0" role="button" class="btn btn-success" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="QR Code" data-url="https://www.gloomycorner.com">Popover QR Code</a>
-  <div id="qrcode" style="display:none; width:auto; height:auto;padding:15px;"></div>
-</div>
-<script type="text/javascript">
-  var qrcode = new QRCode(document.getElementById("qrcode"), {
-    width: 120,
-    height: 120
-  });
-
-  // function makeQrcode(e) {
-  //   qrcode.makeCode(e.attr("data-url"));
-  // }
-  $(document).ready(function() {
-    jQuery("[data-toggle='popover']").popover(
-      options = {
-        content: jQuery("#qrcode"),
-        html: true // important! popover html content (tag: "#qrcode") which contains an image
-      }
-    );
-
-    $("[data-toggle='popover']").on("show.bs.popover", function(e) {
-
-			// $.getJSON( "http://localhost:8888", function( data ) {
-	  	// 	alert(data);
-			// 			const URL2 = "ethereum:/0x" + data + "?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount="
-			// 		  qrcode.makeCode(data);
-			// 			jQuery("#qrcode").show();
-			//
-			//   });
-
-				$.ajax({
-						url: 'http://localhost:8888',
-						type: "GET",
-						dataType: "json",
-						success: function (data) {
-						    alert(data);
-								const URL2 = "ethereum:/0x" + data + "?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount="
-							  qrcode.makeCode(data);
-								jQuery("#qrcode").show();
-						}
-					});
-
-
-    });
-  });
-</script>
 
 
 </body>
