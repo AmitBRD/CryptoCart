@@ -43,7 +43,7 @@
 							 						</div>
 							 						<div class="col-md-4 quantity">
 							 							<label for="quantity">Quantity:</label>
-							 							<input id="quantity0" type="number" value ="0" class="form-control quantity-input" >
+							 							<input id="quantity0" type="number" value ="0" min="0" class="form-control quantity-input" >
 							 						</div>
 							 						<div class="col-md-3 price">
 							 							<span>$27</span>
@@ -73,7 +73,7 @@
 							 						</div>
 							 						<div class="col-md-4 quantity">
 							 							<label for="quantity">Quantity:</label>
-							 							<input id="quantity1" type="number" value ="0" class="form-control quantity-input">
+							 							<input id="quantity1" type="number" value ="0" min="0" class="form-control quantity-input">
 							 						</div>
 							 						<div class="col-md-3 price">
 							 							<span>$27</span>
@@ -103,7 +103,7 @@
 							 						</div>
 							 						<div class="col-md-4 quantity">
 							 							<label for="quantity">Quantity:</label>
-							 							<input id="quantity2" type="number" value ="0" class="form-control quantity-input">
+							 							<input id="quantity2" type="number" value ="0" min="0" class="form-control quantity-input">
 							 						</div>
 							 						<div class="col-md-3 price">
 							 							<span>$130</span>
@@ -142,7 +142,6 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-<script type="text/javascript" src="qrcode/jquery.min.js"></script>
 <script type="text/javascript" src="qrcode/qrcode.js"></script>
 <script type="text/javascript">
 	// Various sample URIs that are parseable by the Android app.
@@ -194,28 +193,36 @@
 	}
 
 	function submit() {
-	  var xhttp = new XMLHttpRequest();
-		var checkoutUrl = "";
-	  xhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-				alert("success");
-				// Get address from response
-	      //document.getElementById("demo").innerHTML = this.responseText;
+	  // var xhttp = new XMLHttpRequest();
+		// var checkoutUrl = "";
+	  // xhttp.onreadystatechange = function() {
+	  //   if (this.readyState == 4 && this.status == 200) {
+		// 		alert("success");
+		// 		// Get address from response
+	  //     //document.getElementById("demo").innerHTML = this.responseText;
+		// 		alert("success:" + this.status);
+		//
+	  //   } else {
+		// 		// TODO: Move to success case
+		// 		var address = "0xfDED40f3a05eDEb4Ad833d605D22bf27ca9353Ea" //TODO: get from response
+		//
+		// 		window.open(getCheckoutUrl(address), "_self")
+		//
+	  //   	alert("submit error:" + this.status);
+	  //   }
+	  // };
+		//
+		// var queryParameter = "amount=" + total;
+		// alert(queryParameter);
+	  // xhttp.open("GET", "localhost:8888", true); // TODO: update this page
+	  // xhttp.send(queryParameter);
 
-	    } else {
-				// TODO: Move to success case
-				var address = "0xfDED40f3a05eDEb4Ad833d605D22bf27ca9353Ea" //TODO: get from response
+		$.get( "http://localhost:8888", function( data ) {
+  		alert(data);
 
-				window.open(getCheckoutUrl(address), "_self")
 
-	    	alert("submit error:" + this.status);
-	    }
-	  };
 
-		var queryParameter = "amount=" + total;
-		alert(queryParameter);
-	  xhttp.open("POST", "demo_post.asp", true); // TODO: update this page
-	  xhttp.send(queryParameter);
+		});
 	}
 
 	function getCheckoutUrl(address) {
@@ -247,5 +254,61 @@
   });
 
 </script>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<div class="container">
+  <a tabindex="0" role="button" class="btn btn-success" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="QR Code" data-url="https://www.gloomycorner.com">Popover QR Code</a>
+  <div id="qrcode" style="display:none; width:auto; height:auto;padding:15px;"></div>
+</div>
+<script type="text/javascript">
+  var qrcode = new QRCode(document.getElementById("qrcode"), {
+    width: 120,
+    height: 120
+  });
+
+  // function makeQrcode(e) {
+  //   qrcode.makeCode(e.attr("data-url"));
+  // }
+  jQuery(document).ready(function() {
+    jQuery("[data-toggle='popover']").popover(
+      options = {
+        content: jQuery("#qrcode"),
+        html: true // important! popover html content (tag: "#qrcode") which contains an image
+      }
+    );
+
+    jQuery("[data-toggle='popover']").on("show.bs.popover", function(e) {
+
+			// $.getJSON( "http://localhost:8888", function( data ) {
+	  	// 	alert(data);
+			// 			const URL2 = "ethereum:/0x" + data + "?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount="
+			// 		  qrcode.makeCode(data);
+			// 			jQuery("#qrcode").show();
+			//
+			//   });
+
+				$.ajax({
+						url: 'localhost:8888',
+						type: "GET",
+						dataType: "json",
+						success: function (data) {
+						    alert(data);
+								const URL2 = "ethereum:/0x" + data + "?tokenaddress=0x0000000000085d4780B73119b644AE5ecd22b376&amount="
+							  qrcode.makeCode(data);
+								jQuery("#qrcode").show();
+						}
+					});
+
+
+    });
+  });
+</script>
+
+
 </body>
 </html>
