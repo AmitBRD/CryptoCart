@@ -14,6 +14,7 @@ from tornado.httpclient import HTTPRequest
 import asyncio
 from pool import Pool
 from threading import Condition
+from tornado.websocket import websocket_connect
 import os
 from walletkit import BRSequence
 from queue import Queue,Empty
@@ -29,6 +30,8 @@ monitor_address = set()
 http_client = httpclient.HTTPClient()
 baseUrl = "https://api.blockset.com"
 subscriptionsUrl = baseUrl + "/subscriptions"
+websocket_url= "wss://blockset.com/webhooks/ws"
+ws_channel="582e88e0-d413-454e-977d-4d43a5066918"
 addresses = ""
 
 #Dont put that here
@@ -37,9 +40,11 @@ phrase = "ginger settle marine tissue robot crane night number ramp coast roast 
 
 for i in range(NUM_BASKETS):
   seed = [0] * 64
-  key = br_sequence.derive_private_key_from_seed_and_index_eth(seed,phrase,i)
-  address = br_sequence.generate_address_eth(key["pubKey"], key["compressed"])
+  #Eth Addresses cannot be generated with DER compressed 
+  val = br_sequence.derive_private_key_from_seed_and_index_eth(seed,phrase,i,_der_compressed=0)
+  address =  address = br_sequence.generate_address_eth(val["pubKey"], val["compressed"])
   baskets.put(address)
+  print( bytearray(address["bytes"]).hex())
   addresses = addresses + bytearray(address["bytes"]).hex()
   if i < NUM_BASKETS - 1:
     addresses = addresses + ", "
@@ -143,7 +148,8 @@ class WebhookHandler(tornado.web.RequestHandler):
     if(address in monitor_address):
       monitor_address.remove(address)
       self.finish(json.dumps(address))
-    self.finish("NO SUCH CART")
+    else:
+      self.finish("NO SUCH CART")
 
 
 
@@ -156,12 +162,37 @@ def make_app():
 
     ])
 
+@gen.coroutine
+def monitor_ws(message):
+  print(message)
+  # address = self.get_argument("address")
+  # global monitor_address
+  # print(monitor_address)
+  # if(address in monitor_address):
+  #   monitor_address.remove(address)
+  #   self.finish(json.dumps(address))
+  # else:
+  #   self.finish("NO SUCH CART")
+
+@gen.coroutine
+def connect_ws():
+   subscription_socket = yield websocket_connect(websocket_url,ping_interval=5, on_message_callback=monitor_ws)
+   subscription_socket.write_message('{"type":"listen","payload":{"channel":'+ws_channel+'}}')
+   subscription_socket.write_message('{"type":"catch-up","payload":{"channel":"'+ws_channel+'"}}')
+  # ioloop.IOLoop.instance().spawn_callback(
+  #   lambda: 
+  #     subscription_socket.write_message('{"type":"ping"}'))
+   print('connected to channel:'+ws_channel)
+
 if __name__ == "__main__":
     app = make_app()
     app.listen(8888)
+    
+   
     # task = tornado.ioloop.PeriodicCallback(
     #         lambda: print('period'),
     #         2000)   # 2000 ms
     # task.start()
+    connect_ws()
     ioloop.IOLoop.instance().spawn_callback(monitor_for_transfers)
     tornado.ioloop.IOLoop.current().start()
