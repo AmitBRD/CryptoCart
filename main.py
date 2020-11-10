@@ -32,7 +32,7 @@ baseUrl = "https://api.blockset.com"
 subscriptionsUrl = baseUrl + "/subscriptions"
 websocket_url= "wss://blockset.com/webhooks/ws"
 ws_channel="582e88e0-d413-454e-977d-4d43a5066918"
-addresses = ""
+addresses = []
 
 #Dont put that here
 phrase = "ginger settle marine tissue robot crane night number ramp coast roast critic".encode("UTF-8")
@@ -42,12 +42,11 @@ for i in range(NUM_BASKETS):
   seed = [0] * 64
   #Eth Addresses cannot be generated with DER compressed 
   val = br_sequence.derive_private_key_from_seed_and_index_eth(seed,phrase,i,_der_compressed=0)
-  address =  address = br_sequence.generate_address_eth(val["pubKey"], val["compressed"])
+  address = br_sequence.generate_address_eth(val["pubKey"], val["compressed"])
   baskets.put(address)
-  print( bytearray(address["bytes"]).hex())
-  addresses = addresses + bytearray(address["bytes"]).hex()
-  if i < NUM_BASKETS - 1:
-    addresses = addresses + ", "
+  #print( bytearray(address["bytes"]).hex())
+  addresses.append("0x"+bytearray(address["bytes"]).hex())
+
 
 requestHeader = {"Content-Type": "application/json",
             "accept":"application/json",
@@ -57,7 +56,7 @@ requestBody = {"device_id":"cryptoCart1",
             "environment":"production",
             "kind":"webhook",
             "value":"https://blockset.com/webhooks/582e88e0-d413-454e-977d-4d43a5066918"},
-            "currencies":[{"addresses":[addresses],
+            "currencies":[{"addresses":addresses,
             "currency_id":"ethereum-mainnet:__native__",
             "events":[{"confirmations":[1,6],"name":"confirmed"}]}]}
 
