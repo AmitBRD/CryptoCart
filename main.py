@@ -31,7 +31,7 @@ http_client = httpclient.HTTPClient()
 baseUrl = "https://api.blockset.com"
 subscriptionsUrl = baseUrl + "/subscriptions"
 websocket_url= "wss://blockset.com/webhooks/ws"
-ws_channel="582e88e0-d413-454e-977d-4d43a5066918"
+ws_channel="582e88e0-d413-454e-977d-4d43a5066917"
 addresses = []
 
 #Dont put that here
@@ -55,7 +55,7 @@ requestBody = {"device_id":"cryptoCart3",
           "endpoint":{
             "environment":"production",
             "kind":"webhook",
-            "value":"https://blockset.com/webhooks/582e88e0-d413-454e-977d-4d43a5066918"},
+            "value":"https://blockset.com/webhooks/"+ws_channel},
             "currencies":[{"addresses":addresses,
             "currency_id":"ethereum-mainnet:__native__",
             "events":[{"confirmations":[1,6],"name":"confirmed"}]}]}
