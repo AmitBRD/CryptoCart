@@ -50,8 +50,8 @@ for i in range(NUM_BASKETS):
 
 requestHeader = {"Content-Type": "application/json",
             "accept":"application/json",
-            "authorization":"Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4ZjBhZTIwZi1kMTFmLTQ2ZDUtYThhOC00ZWRmMDUyYzcwYWQiLCJpYXQiOjE2MDQ5ODUwNzEsImV4cCI6MTYwNTA3MTUzMSwiYnJkOmN0IjoidXNyIiwiYnJkOmNsaSI6IjFkMGNmN2M5LWY1MDUtNDA2Mi04ZTc5LTgxZTU2NTgzNDk4ZSJ9.yB9h_IxaW8BkgoO8Z4L0-FWdR8P0fLK_VazYiImqUcEFG9Kw82k7UrzFDmAUM2BHAt6CYs10F5xokDHB7z372A"}
-requestBody = {"device_id":"cryptoCart1",
+            "authorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0MTY2NjVlNC1hYjJjLTRmOTUtOWRjMy00MTAwNDBjNTRmNzUiLCJicmQ6Y3QiOiJjbGkiLCJleHAiOjkyMjMzNzIwMzY4NTQ3NzUsImlhdCI6MTYwNTE1NjM1M30.SFVAOUfbOj-_6OEvloYEfVyeZbkglgPIdMzQtKAhz-3y3HN73NAJB36b7h-yIArIQkUDYULt9YkRYzRRG3Pk1Q"}
+requestBody = {"device_id":"cryptoCart3",
           "endpoint":{
             "environment":"production",
             "kind":"webhook",
@@ -119,6 +119,7 @@ class StaticHandler(tornado.web.StaticFileHandler):
 class MainHandler(tornado.web.RequestHandler):
     @gen.coroutine
     def get(self):
+      amount=self.get_argument("amount", 0)
       try:
           with pool.lease() as address:
             #addr_str = str(binascii.hexlify(bytearray(address["bytes"])))
@@ -174,13 +175,17 @@ def monitor_ws(message):
   #   self.finish("NO SUCH CART")
 
 @gen.coroutine
+def ping_socket(socket):
+    while True:
+      socket.write_message('{"type":"ping"}')
+      yield gen.sleep(1)
+
+@gen.coroutine
 def connect_ws():
    subscription_socket = yield websocket_connect(websocket_url,ping_interval=5, on_message_callback=monitor_ws)
-   subscription_socket.write_message('{"type":"listen","payload":{"channel":'+ws_channel+'}}')
+   subscription_socket.write_message('{"type":"listen","payload":{"channel":"'+ws_channel+'"}}')
    subscription_socket.write_message('{"type":"catch-up","payload":{"channel":"'+ws_channel+'"}}')
-  # ioloop.IOLoop.instance().spawn_callback(
-  #   lambda: 
-  #     subscription_socket.write_message('{"type":"ping"}'))
+   ioloop.IOLoop.instance().spawn_callback(ping_socket,subscription_socket)
    print('connected to channel:'+ws_channel)
 
 if __name__ == "__main__":
