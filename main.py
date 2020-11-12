@@ -168,14 +168,14 @@ def monitor_ws(message):
   address,currency_id,amount = parse_message(message)
   if(address != None):
     print("address:", address, "currency_id:",currency_id, "amount:", amount)
-  # address = self.get_argument("address")
-  # global monitor_address
-  # print(monitor_address)
-  # if(address in monitor_address):
-  #   monitor_address.remove(address)
-  #   self.finish(json.dumps(address))
-  # else:
-  #   self.finish("NO SUCH CART")
+    address = address[2:]
+    global monitor_address
+    print(monitor_address)
+    if(address in monitor_address):
+      monitor_address.remove(address)
+      print(json.dumps(address))
+    else:
+      print("NO SUCH CART")
 
 @gen.coroutine
 def ping_socket(socket):
