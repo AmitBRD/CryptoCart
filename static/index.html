@@ -251,7 +251,7 @@
 	  	
 	  	$("#pay").toggleClass("btn-secondary");
 	  	
-		$.ajax({url: 'http://localhost:8888',
+		$.ajax({url: 'http://localhost:8888?amount='+total,
 						type: "GET",
 						dataType: "json",
 						success: function (data) {
@@ -261,7 +261,7 @@
 							  	qrcode.clear();
 							  	setTimeout(function(){
 							  		$("#pay").toggleClass("btn-secondary");
-							  		qrcode.makeCode(data);
+							  		qrcode.makeCode(URL2);
 							  	}, 450);
 								//$('#myModal').modal('show')
 
