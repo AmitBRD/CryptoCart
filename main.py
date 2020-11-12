@@ -164,7 +164,10 @@ def make_app():
 
 @gen.coroutine
 def monitor_ws(message):
-  print(message)
+  print("DEBUG:",message)
+  address,currency_id,amount = parse_message(message)
+  if(address != None):
+    print("address:", address, "currency_id:",currency_id, "amount:", amount)
   # address = self.get_argument("address")
   # global monitor_address
   # print(monitor_address)
@@ -180,6 +183,21 @@ def ping_socket(socket):
       socket.write_message('{"type":"ping"}')
       yield gen.sleep(1)
 
+
+def parse_message(message_json):
+  msg = json.loads(message_json)
+  if(msg["type"]=="http"):
+    #the basket
+    address = msg['payload']['body']['_embedded']['transfers'][1]['to_address']
+    #amount transferred
+    currency_id = msg["payload"]["body"]["_embedded"]["transfers"][1]["amount"]["currency_id"]
+    #amount transferred
+    amount = msg["payload"]["body"]["_embedded"]["transfers"][1]["amount"]["amount"]
+    return address,currency_id,amount
+  else:
+    return None,None,None
+
+
 @gen.coroutine
 def connect_ws():
    subscription_socket = yield websocket_connect(websocket_url,ping_interval=5, on_message_callback=monitor_ws)
@@ -189,6 +207,8 @@ def connect_ws():
    print('connected to channel:'+ws_channel)
 
 if __name__ == "__main__":
+    #parse_message(r'{"type":"http","payload":{"timestamp":1605162943.512,"uuid":"39363a58-ab31-4be4-ab4a-fa1884f0a3bd","method":"POST","url":"/582e88e0-d413-454e-977d-4d43a5066918","headers":{"host":"blockset.com","x-request-id":"70997810f7a51b4a3049350aaac44c87","x-real-ip":"64.225.39.56","x-forwarded-for":"64.225.39.56","x-forwarded-host":"blockset.com","x-forwarded-port":"443","x-forwarded-proto":"https","x-original-uri":"/webhooks/582e88e0-d413-454e-977d-4d43a5066918","x-scheme":"https","x-original-forwarded-for":"64.225.39.56","content-length":"2598","accept-encoding":"gzip","cf-ipcountry":"US","cf-ray":"5f0e3c0ccf522133-SJC","cf-visitor":"{\"scheme\":\"https\"}","accept":"text/plain, application/json, application/*+json, */*","authorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJzdWIiOiJodHRwczovL2Jsb2Nrc2V0LmNvbS93ZWJob29rcy81ODJlODhlMC1kNDEzLTQ1NGUtOTc3ZC00ZDQzYTUwNjY5MTgiLCJuYmYiOjE2MDUxNjI0ODAsImlzcyI6IkJsb2Nrc2V0IiwiZXhwIjoxNjA1MTYzNDQwLCJpYXQiOjE2MDUxNjI1NDB9.FBjGmqaoXOY0ESuog6nMGP5bdWsSx8pFgd6ifA0ZDWgNprZsIs8O3AMtKkmix6w6tdp7JlW-O8Xv77raHOBabg","content-type":"application/json","user-agent":"okhttp/4.3.0","cf-request-id":"065cc3dbfb00002133442b4000000001","cf-connecting-ip":"64.225.39.56","cdn-loop":"cloudflare"},"body":{"transaction_id":"ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d","identifier":"0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d","hash":"0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d","blockchain_id":"ethereum-mainnet","timestamp":"2020-11-12T06:34:29.000+00:00","_embedded":{"transfers":[{"transfer_id":"ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d:0","blockchain_id":"ethereum-mainnet","from_address":"0xae70c9c9a6344ed3b8c1227dc46c218f38adb41a","to_address":"__fee__","index":0,"transaction_id":"ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d","amount":{"currency_id":"ethereum-mainnet:__native__","amount":"4809000000000000"},"meta":{},"acknowledgements":1,"layers":{},"_links":{"self":{"href":"http://10.138.4.239:8080/transfers/ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d:0"},"transaction":{"href":"http://10.138.4.239:8080/transactions/ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d"}}},{"transfer_id":"ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d:1","blockchain_id":"ethereum-mainnet","from_address":"0xae70c9c9a6344ed3b8c1227dc46c218f38adb41a","to_address":"0x8fb4cb96f7c15f9c39b3854595733f728e1963bc","index":1,"transaction_id":"ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d","amount":{"currency_id":"ethereum-mainnet:__native__","amount":"216340000000000"},"meta":{},"acknowledgements":1,"layers":{},"_links":{"self":{"href":"http://10.138.4.239:8080/transfers/ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d:1"},"transaction":{"href":"http://10.138.4.239:8080/transactions/ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d"}}}]},"size":21000,"fee":{"currency_id":"ethereum-mainnet:__native__","amount":"4809000000000000"},"confirmations":4,"index":8,"block_hash":"0x7864ffad68b6b2073a6f800f44ed9dcdc8b5fdcf20ee790700ca7b43c4863f3d","block_height":11241236,"status":"confirmed","calls":[],"meta":{"gasLimit":"0x5208","gasPrice":"0x355176b200","gasUsed":"0x5208","input":"0x","nonce":"0x8"},"acknowledgements":1,"layers":{},"_links":{"self":{"href":"http://10.138.4.239:8080/transactions/ethereum-mainnet:0xba0698315b33e4549d02e2ba2622eb40d5dca42709d58a8a6146cc66b784f98d"},"block":{"href":"http://10.138.4.239:8080/blocks/ethereum-mainnet:0x7864ffad68b6b2073a6f800f44ed9dcdc8b5fdcf20ee790700ca7b43c4863f3d"}}}}}')
+
     app = make_app()
     app.listen(8888)
     
